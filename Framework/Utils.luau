@@ -1,7 +1,6 @@
 local utils = {
     modules = {},
-    instances = {},
-    connections = {}
+    instances = {}
 };
 
 do -- functions
