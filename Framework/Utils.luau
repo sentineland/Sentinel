@@ -1,6 +1,7 @@
 local utils = {
     modules = {},
-    instances = {}
+    instances = {},
+    connections = {}
 };
 
 do -- functions
@@ -43,6 +44,18 @@ do -- functions
         return tween;
     end;
     tween = modules.tween;
+    -- 
+    modules.connection = function(signal, callback)
+        local connection = signal:Connect(callback);
+        table.insert(utils.connections, connection);
+        return connection;
+    end;
+    connection = modules.connection;
+    --
+    modules.lerp = function(a, b, t)
+        return a + (b - a) * t
+    end
+    lerp = modules.lerp;
 end;
 --
 return utils;
