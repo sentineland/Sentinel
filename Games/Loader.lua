@@ -6,7 +6,7 @@ local players       = game.GetService(game, "Players");
 local market        = game.GetService(game, "MarketplaceService");
 local game_name     = market:GetProductInfo(game['PlaceId'])["Name"];
 local executor 		= identifyexecutor and identifyexecutor() or 'Unknown';
-local path          = "https://raw.githubusercontent.com/sentineland/Sentinel/refs/heads/main/Games";
+local path          = "https://raw.githubusercontent.com/sentineland/Sentinel/refs/heads/main/Games/";
 
 local game_list = {};
 game_list['fallen survival'] = {
