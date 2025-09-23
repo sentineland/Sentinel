@@ -15,7 +15,7 @@ local games = {};
 do
     games["fallen survival"] = {
         status    = "undetected";
-        executors = { "Wave", "MacSploit", "Potassium", "Zenith" };
+        executors = { "Wave", "Potassium", "Zenith" };
     };
 end
 
