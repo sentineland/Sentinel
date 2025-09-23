@@ -9,7 +9,7 @@ local executor_name      = identifyexecutor and identifyexecutor() or "Unknown";
 local http               = game.HttpGet;
 local load_string        = loadstring;
 local msgbox             = messageboxasync or messagebox;
-local base_url           = "https://raw.githubusercontent.com/sentineland/Sentinel/refs/heads/main/Games/";
+local url                = "https://raw.githubusercontent.com/sentineland/Sentinel/refs/heads/main/Games/";
 
 local games = {};
 do
@@ -107,8 +107,8 @@ do
     local selected_game = loader.select(game_name);
 
     if (selected_game == "fallen survival") then
-        loader.fetch(base_url .. "Fallen.lua");
+        loader.fetch(url .. "Fallen.lua");
     elseif (selected_game == "universal") then
-        loader.fetch(base_url .. "Universal.lua");
+        loader.fetch(url .. "Universal.lua");
     end;
 end
