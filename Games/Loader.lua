@@ -19,14 +19,14 @@ end
 
 local loader = {};
 do
-    loader.fatal = function(msg)
-        PlayersService.LocalPlayer:Kick(msg);
+    loader.kick = function(text)
+        PlayersService.LocalPlayer:Kick(text);
         task.wait(9e9);
     end;
 
     loader.verify = function(fn, name)
         if (type(fn) ~= "function") then
-            loader.fatal("[" .. executor_name .. "] Missing functionality (" .. name .. ") - unsupported executor");
+            loader.kick("[" .. executor_name .. "] Missing function (" .. name .. ") - unsupported executor");
         end;
         return fn;
     end;
@@ -35,22 +35,22 @@ do
         local fn = loader.verify(msgbox, "messagebox");
         local ok, res = pcall(fn, text, title, id);
         if (not ok) then
-            loader.fatal("[" .. executor_name .. "] Message execution error - " .. tostring(text));
+            loader.kick("[" .. executor_name .. "] Message execution error - " .. tostring(text));
         end;
         return res;
     end;
 
     loader.fetch = function(url)
-        local req_fn  = loader.verify(request, "request");
-        local load_fn = loader.verify(loadstring, "loadstring");
+        local req = loader.verify(request, "request");
+        local run = loader.verify(loadstring, "loadstring");
 
-        local ok, res = pcall(req_fn, { Url = url; Method = "GET" });
+        local ok, res = pcall(req, { Url = url; Method = "GET" });
         if (not ok or not res or type(res.Body) ~= "string" or res.StatusCode ~= 200) then
             loader.message("Failed to retrieve script\n\nURL: " .. url, "[" .. executor_name .. "]", 48);
             task.wait(9e9);
         end;
 
-        local chunk, err = load_fn(res.Body);
+        local chunk, err = run(res.Body);
         if (not chunk) then
             loader.message("Script parse failed\n\n" .. tostring(err), "[" .. executor_name .. "]", 48);
             task.wait(9e9);
@@ -59,17 +59,21 @@ do
         return chunk();
     end;
 
+    loader.clean = function(name)
+        return name:gsub("[^%w%s]", ""):lower():match("^%s*(.-)%s*$");
+    end;
+
     loader.select = function(name)
-        local clean_name = name:gsub("[^a-zA-Z0-9%s]", ""):lower():match("^%s*(.-)%s*$");
+        local clean_name = loader.clean(name);
 
         for gname, data in pairs(games) do
             if (clean_name:find(gname:lower(), 1, true)) then
                 if (data.status == "updating") then
-                    loader.fatal("[" .. executor_name .. "] " .. gname .. " script is updating.");
+                    loader.kick("[" .. executor_name .. "] " .. gname .. " script is updating.");
                 end;
 
                 for _, exec in ipairs(data.executors) do
-                    if (executor_name:match(exec)) then
+                    if executor_name:match(exec) then
                         return gname;
                     end;
                 end;
