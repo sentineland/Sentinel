@@ -2,7 +2,7 @@ if (not game:IsLoaded()) then
     repeat game.Loaded:Wait() until game:IsLoaded();
 end;
 
-local PlayersService     = game:GetService(game, "Players");
+local PlayersService     = game:GetService("Players")
 local MarketplaceService = game.GetService(game, "MarketplaceService");
 local game_name          = MarketplaceService:GetProductInfo(game['PlaceId'])["Name"];
 local executor_name      = identifyexecutor and identifyexecutor() or "Unknown";
